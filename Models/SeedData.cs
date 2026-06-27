@@ -27,7 +27,8 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("1989-2-12"),
                     Genre = "Romantic Comedy",
                     Rating = "R",
-                    Price = 7.99M
+                    Price = 7.99M,
+                    PosterUrl = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
                 },
 
                 new Movie
@@ -36,7 +37,8 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("1984-3-13"),
                     Genre = "Comedy",
                     Rating = "PG",
-                    Price = 8.99M
+                    Price = 8.99M,
+                    PosterUrl = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
                 },
 
                 new Movie
@@ -45,7 +47,8 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("1986-2-23"),
                     Genre = "Comedy",
                     Rating = "PG",
-                    Price = 9.99M
+                    Price = 9.99M,
+                    PosterUrl = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" 
                 },
 
                 new Movie
@@ -54,7 +57,9 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("1959-4-15"),
                     Genre = "Western",
                     Rating = "PG",
-                    Price = 3.99M
+                    Price = 3.99M,
+                    PosterUrl = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+
                 }
             );
             context.SaveChanges();

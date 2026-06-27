@@ -1,54 +1,164 @@
 @model MVCMovie.Models.Movie
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Movie";
 }
 
-<h1>Edit</h1>
+<div class="container py-5">
 
-<h4>Movie</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">
+                        ✏️ Edit Movie
+                    </h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="row">
+
+                        <!-- Poster Preview -->
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+
+                            <img id="posterPreview"
+                                 src="@(string.IsNullOrWhiteSpace(Model.PosterUrl)
+                                        ? "/images/no-poster.png"
+                                        : Model.PosterUrl)"
+                                 class="img-fluid rounded shadow border"
+                                 style="max-height:420px; object-fit:cover;"
+                                 alt="Movie Poster" />
+
+                        </div>
+
+                        <!-- Form -->
+                        <div class="col-md-8">
+
+                            <form asp-action="Edit">
+
+                                <div asp-validation-summary="ModelOnly"
+                                     class="alert alert-danger">
+                                </div>
+
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="mb-3">
+                                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                                    <input asp-for="Title"
+                                           class="form-control"
+                                           placeholder="Enter movie title" />
+                                    <span asp-validation-for="Title"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="PosterUrl" class="form-label fw-semibold"></label>
+                                    <input asp-for="PosterUrl"
+                                           id="PosterUrl"
+                                           class="form-control"
+                                           placeholder="https://..." />
+                                    <span asp-validation-for="PosterUrl"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Rating" class="form-label fw-semibold"></label>
+                                    <input asp-for="Rating"
+                                           class="form-control" />
+                                    <span asp-validation-for="Rating"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ReleaseDate" class="form-label fw-semibold"></label>
+                                    <input asp-for="ReleaseDate"
+                                           type="date"
+                                           class="form-control" />
+                                    <span asp-validation-for="ReleaseDate"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Genre" class="form-label fw-semibold"></label>
+                                    <input asp-for="Genre"
+                                           class="form-control" />
+                                    <span asp-validation-for="Genre"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Price" class="form-label fw-semibold"></label>
+                                    <input asp-for="Price"
+                                           class="form-control" />
+                                    <span asp-validation-for="Price"
+                                          class="text-danger small"></span>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+
+                                    <a asp-action="Index"
+                                       class="btn btn-outline-secondary">
+                                        ← Back
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-warning">
+                                        💾 Save Changes
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
+
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        const posterInput = document.getElementById("PosterUrl");
+        const posterPreview = document.getElementById("posterPreview");
+
+        posterInput.addEventListener("input", function () {
+
+            if (this.value.trim() !== "") {
+
+                posterPreview.src = this.value;
+
+            } else {
+
+                posterPreview.src = "/images/no-poster.png";
+
+            }
+
+        });
+
+        posterPreview.onerror = function () {
+
+            this.src = "/images/no-poster.png";
+
+        };
+
+    </script>
+
 }

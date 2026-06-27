@@ -1,53 +1,131 @@
 @model MVCMovie.Models.Movie
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Movie";
 }
 
-<h1>Create</h1>
+<div class="container py-5">
 
-<h4>Movie</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        🎬 Add New Movie
+                    </h3>
+                </div>
+
+            <div class="card-body p-4">
+
+    <div class="row">
+
+        <!-- Poster Preview -->
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+
+            <img id="posterPreview"
+                 src="~/images/no-poster.png"
+                 class="img-fluid rounded shadow border"
+                 style="max-height:420px; object-fit:cover;"
+                 alt="Movie Poster" />
+
+        </div>
+
+        <!-- Form -->
+        <div class="col-md-8">
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter movie title" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PosterUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="PosterUrl"
+                           class="form-control"
+                           id="PosterUrl"
+                           placeholder="https://image.tmdb.org/..." />
+                    <span asp-validation-for="PosterUrl" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Rating" class="form-label fw-semibold"></label>
+                    <input asp-for="Rating" class="form-control" placeholder="e.g. 8.5" />
+                    <span asp-validation-for="Rating" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReleaseDate" class="form-label fw-semibold"></label>
+                    <input asp-for="ReleaseDate" type="date" class="form-control" />
+                    <span asp-validation-for="ReleaseDate" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Genre" class="form-label fw-semibold"></label>
+                    <input asp-for="Genre" class="form-control" placeholder="Action, Drama..." />
+                    <span asp-validation-for="Genre" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Price" class="form-label fw-semibold"></label>
+                    <input asp-for="Price" class="form-control" placeholder="0.00" />
+                    <span asp-validation-for="Price" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        ← Back
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        🎬 Create Movie
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+         const posterInput = document.getElementById("PosterUrl");
+        const posterPreview = document.getElementById("posterPreview");
+
+        posterInput.addEventListener("input", function () {
+
+            if (this.value.trim() !== "") {
+
+                posterPreview.src = this.value;
+
+            }
+            else {
+
+                posterPreview.src = "/images/no-poster.png";
+
+            }
+
+        });
+
+        posterPreview.onerror = function () {
+
+            this.src = "/images/no-poster.png";
+
+        };
+    </script>
 }

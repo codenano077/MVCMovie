@@ -1,0 +1,127 @@
+@model MVCMovie.Models.ImportMovieViewModel
+
+@{
+    ViewData["Title"] = "Import Movie";
+}
+
+<div class="container py-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">
+                🎬 Import Movie
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Search -->
+
+            <div class="mb-4">
+
+                <label class="form-label fw-bold">
+                    Search Movie
+                </label>
+
+                <input
+                    id="searchMovie"
+                    class="form-control form-control-lg"
+                    placeholder="Start typing a movie title..." />
+
+                <div id="movieSuggestions"
+                     class="list-group mt-2">
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="row">
+
+                <!-- Poster -->
+
+                <div class="col-md-4 text-center">
+
+                    <img id="posterImage"
+                         src="https://placehold.co/300x450?text=No+Poster"
+                         class="img-fluid rounded shadow" />
+
+                </div>
+
+                <!-- Movie Details -->
+
+                <div class="col-md-8">
+
+                    <form>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Title</label>
+
+                            <input asp-for="Title"
+                                   class="form-control"
+                                   id="Title" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Genre</label>
+
+                            <input asp-for="Genre"
+                                   class="form-control"
+                                   id="Genre" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Release Date</label>
+
+                            <input asp-for="ReleaseDate"
+                                   type="date"
+                                   class="form-control"
+                                   id="ReleaseDate" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                IMDb Rating
+                            </label>
+
+                            <input asp-for="Rating"
+                                   class="form-control"
+                                   id="Rating" />
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Price
+                            </label>
+
+                            <input asp-for="Price"
+                                   class="form-control"
+                                   id="Price" />
+
+                        </div>
+
+                        <button class="btn btn-success btn-lg">
+                            Save Movie
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

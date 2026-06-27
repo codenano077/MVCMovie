@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCMovie.Models;
 using MvcMovie.Data;
+using MVCMovie.Services;
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
 {
@@ -16,6 +17,7 @@ else
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<IMovieService, TMDbMovieService>();
 
 var app = builder.Build();
 

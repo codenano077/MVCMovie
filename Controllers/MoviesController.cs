@@ -186,5 +186,11 @@ namespace MVCMovie.Controllers
         {
             return _context.Movie.Any(e => e.Id == id);
         }
+    
+        public IActionResult Import()
+        {
+            return View(new ImportMovieViewModel());
+        }
+    
     }
 }

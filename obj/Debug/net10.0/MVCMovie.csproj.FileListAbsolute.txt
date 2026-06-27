@@ -21,7 +21,6 @@ D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\rjsmcshtml.dswa.cache.jso
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\scopedcss\bundle\MVCMovie.styles.css
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\scopedcss\projectbundle\MVCMovie.bundle.scp.css
-D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\compressed\yshqmrbvei-{0}-b9sayid5wm-b9sayid5wm.gz
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\compressed\0gk0wzvgdb-{0}-61n19gt1b8-61n19gt1b8.gz
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\compressed\4cqhp3ofqh-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\compressed\iye0aswssx-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -365,3 +364,4 @@ D:\.NET projects\MVC.Movies\MVCMovie\bin\Debug\net10.0\runtimes\win-x64\native\e
 D:\.NET projects\MVC.Movies\MVCMovie\bin\Debug\net10.0\runtimes\win-x86\native\e_sqlite3.dll
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\MVCMovie.csproj.AssemblyReference.cache
 D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\MVCMovie.csproj.Up2Date
+D:\.NET projects\MVC.Movies\MVCMovie\obj\Debug\net10.0\compressed\yshqmrbvei-{0}-l4ff0aij52-l4ff0aij52.gz
