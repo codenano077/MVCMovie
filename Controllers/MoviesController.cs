@@ -7,17 +7,67 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCMovie.Models;
 using MvcMovie.Data;
+using MVCMovie.Services;
 
 namespace MVCMovie.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly MvcMovieContext _context;
+        private readonly IMovieService _movieService;
 
-        public MoviesController(MvcMovieContext context)
+        public MoviesController(MvcMovieContext context, IMovieService movieService)
         {
             _context = context;
+            _movieService = movieService;   
         }
+        [HttpGet]
+    public async Task<IActionResult> SearchMovie(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return Json(new List<object>());
+
+        var result = await _movieService.SearchMoviesAsync(query);
+
+        if (result == null)
+            return Json(new List<object>());
+
+        var movies = result.Results
+            .Where(m => !string.IsNullOrEmpty(m.Title))
+            .Take(10)
+            .Select(m => new
+            {
+                id = m.Id,
+                title = m.Title,
+                year = string.IsNullOrWhiteSpace(m.ReleaseDate)
+                    ? ""
+                    : m.ReleaseDate.Substring(0, 4),
+                poster = string.IsNullOrWhiteSpace(m.PosterPath)
+                    ? null
+                    : $"https://image.tmdb.org/t/p/w200{m.PosterPath}"
+            });
+         return Json(movies);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMovieDetails(int id)
+    {
+        var movie = await _movieService.GetMovieDetailsAsync(id);
+
+        if (movie == null)
+            return NotFound();
+
+        return Json(new
+        {
+            title = movie.Title,
+            releaseDate = movie.ReleaseDate,
+            rating = movie.VoteAverage,
+            genre = string.Join(", ", movie.Genres.Select(g => g.Name)),
+            poster = string.IsNullOrWhiteSpace(movie.PosterPath)
+                ? ""
+                : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}"
+        });
+    }
 
         // GET: Movies
         public async Task<IActionResult> Index(string MovieGenre, string searchString)
@@ -191,6 +241,32 @@ namespace MVCMovie.Controllers
         {
             return View(new ImportMovieViewModel());
         }
+
+        [HttpPost]
+[ValidateAntiForgeryToken]
+    public async Task<IActionResult> Import(ImportMovieViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var movie = new Movie
+        {
+            Title = model.Title,
+            Genre = model.Genre,
+            ReleaseDate = model.ReleaseDate,
+            Rating = model.Rating,
+            Price = model.Price,
+            PosterUrl = model.PosterUrl
+        };
+
+        _context.Movie.Add(movie);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
     
     }
 }

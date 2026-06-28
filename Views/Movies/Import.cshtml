@@ -9,14 +9,10 @@
     <div class="card shadow-lg border-0">
 
         <div class="card-header bg-success text-white">
-            <h3 class="mb-0">
-                🎬 Import Movie
-            </h3>
+            <h3 class="mb-0">🎬 Import Movie</h3>
         </div>
 
         <div class="card-body">
-
-            <!-- Search -->
 
             <div class="mb-4">
 
@@ -24,13 +20,13 @@
                     Search Movie
                 </label>
 
-                <input
-                    id="searchMovie"
-                    class="form-control form-control-lg"
-                    placeholder="Start typing a movie title..." />
+                <input id="searchMovie"
+                       class="form-control form-control-lg"
+                       placeholder="Start typing a movie title..." />
 
                 <div id="movieSuggestions"
-                     class="list-group mt-2">
+                     class="list-group mt-2 shadow"
+                     style="max-height:350px; overflow-y:auto;">
                 </div>
 
             </div>
@@ -38,8 +34,6 @@
             <hr />
 
             <div class="row">
-
-                <!-- Poster -->
 
                 <div class="col-md-4 text-center">
 
@@ -49,65 +43,45 @@
 
                 </div>
 
-                <!-- Movie Details -->
-
                 <div class="col-md-8">
 
-                    <form>
+                    <form asp-action="Import" method="post">
 
                         <div class="mb-3">
-
                             <label class="form-label">Title</label>
-
                             <input asp-for="Title"
-                                   class="form-control"
-                                   id="Title" />
-
+                                   id="Title"
+                                   class="form-control" />
+                            <input asp-for="PosterUrl" id="PosterUrl" type="hidden" />
                         </div>
 
                         <div class="mb-3">
-
                             <label class="form-label">Genre</label>
-
                             <input asp-for="Genre"
-                                   class="form-control"
-                                   id="Genre" />
-
+                                   id="Genre"
+                                   class="form-control" />
                         </div>
 
                         <div class="mb-3">
-
                             <label class="form-label">Release Date</label>
-
                             <input asp-for="ReleaseDate"
+                                   id="ReleaseDate"
                                    type="date"
-                                   class="form-control"
-                                   id="ReleaseDate" />
-
+                                   class="form-control" />
                         </div>
 
                         <div class="mb-3">
-
-                            <label class="form-label">
-                                IMDb Rating
-                            </label>
-
+                            <label class="form-label">IMDb Rating</label>
                             <input asp-for="Rating"
-                                   class="form-control"
-                                   id="Rating" />
-
+                                   id="Rating"
+                                   class="form-control" />
                         </div>
 
                         <div class="mb-4">
-
-                            <label class="form-label">
-                                Price
-                            </label>
-
+                            <label class="form-label">Price</label>
                             <input asp-for="Price"
-                                   class="form-control"
-                                   id="Price" />
-
+                                   id="Price"
+                                   class="form-control" />
                         </div>
 
                         <button class="btn btn-success btn-lg">
@@ -125,3 +99,89 @@
     </div>
 
 </div>
+
+@section Scripts{
+
+<script>
+
+const searchBox = document.getElementById("searchMovie");
+const suggestions = document.getElementById("movieSuggestions");
+
+searchBox.addEventListener("input", async function () {
+
+    const query = this.value.trim();
+
+    if(query.length < 2)
+    {
+        suggestions.innerHTML = "";
+        return;
+    }
+
+    const response = await fetch(`/Movies/SearchMovie?query=${encodeURIComponent(query)}`);
+
+    const movies = await response.json();
+
+    suggestions.innerHTML = "";
+
+    movies.forEach(movie => {
+
+    const item = document.createElement("a");
+
+    item.href = "#";
+
+    item.className = "list-group-item list-group-item-action";
+
+    item.innerHTML = `
+        <div class="d-flex align-items-center">
+
+            <img src="${movie.poster ?? 'https://placehold.co/60x90'}"
+                 width="50"
+                 class="rounded me-3">
+
+            <div>
+                <strong>${movie.title}</strong><br>
+                <small>${movie.year}</small>
+            </div>
+
+        </div>
+    `;
+
+    item.addEventListener("click", async function (e) {
+
+        e.preventDefault();
+
+        // Clear suggestions
+        suggestions.innerHTML = "";
+
+        // Show selected title in search box
+        searchBox.value = movie.title;
+
+        // Get complete movie details
+        const response = await fetch(`/Movies/GetMovieDetails?id=${movie.id}`);
+
+        const details = await response.json();
+
+        // Fill form
+        document.getElementById("Title").value = details.title;
+        document.getElementById("Genre").value = details.genre;
+        document.getElementById("Rating").value = details.rating;
+
+        if(details.releaseDate){
+            document.getElementById("ReleaseDate").value =
+                details.releaseDate.substring(0,10);
+        }
+
+        document.getElementById("posterImage").src =
+            details.poster;
+        document.getElementById("PosterUrl").value = details.poster;
+    });
+
+    suggestions.appendChild(item);
+
+});
+
+});
+
+</script>
+
+}

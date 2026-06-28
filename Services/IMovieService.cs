@@ -4,8 +4,8 @@ namespace MVCMovie.Services
 {
     public interface IMovieService
     {
-        Task<TMDbSearchResponse?> SearchResponse(string query);
+        Task<TMDbSearchResponse?> SearchMoviesAsync(string query);
 
-        Task<TMDbMovieDetails?> GetMovieDetails(string movieId);
+        Task<TMDbMovieDetails?> GetMovieDetailsAsync(int movieId);
     }   
 }

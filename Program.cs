@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MVCMovie.Models;
 using MvcMovie.Data;
 using MVCMovie.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
 {
@@ -17,7 +18,7 @@ else
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient<IMovieService, TMDbMovieService>();
+builder.Services.AddHttpClient<IMovieService, TMDBMovieService>();
 
 var app = builder.Build();
 
@@ -41,12 +42,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

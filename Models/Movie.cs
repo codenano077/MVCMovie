@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace MVCMovie.Models;
-
-
 public class Movie
 {
     public int Id {get; set;}
@@ -13,6 +11,7 @@ public class Movie
     [StringLength(60, MinimumLength = 3)]
     [Required]
     public string? Title {get; set;}
+
     [Display(Name = "Release Date")]
     [DataType(DataType.Date)]
     public DateTime ReleaseDate {get; set;}
@@ -29,6 +28,8 @@ public class Movie
     [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price {get; set;}
+
+
     [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
     [StringLength(5)]
     [Required]
