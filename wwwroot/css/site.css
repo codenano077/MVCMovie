@@ -62,3 +62,10 @@ body {
 label {
     margin-bottom: 6px;
 }
+#movieSuggestions .list-group-item{
+    cursor:pointer;
+}
+
+#movieSuggestions .list-group-item:hover{
+    background:#f8f9fa;
+}

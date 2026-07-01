@@ -244,29 +244,40 @@ namespace MVCMovie.Controllers
 
         [HttpPost]
 [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Import(ImportMovieViewModel model)
+public async Task<IActionResult> Import(ImportMovieViewModel model)
+{
+    if (!ModelState.IsValid)
+        return View(model);
+
+    // Check if movie already exists
+    bool exists = await _context.Movie.AnyAsync(m =>
+        m.Title == model.Title &&
+        m.ReleaseDate.Year == model.ReleaseDate.Year);
+
+    if (exists)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var movie = new Movie
-        {
-            Title = model.Title,
-            Genre = model.Genre,
-            ReleaseDate = model.ReleaseDate,
-            Rating = model.Rating,
-            Price = model.Price,
-            PosterUrl = model.PosterUrl
-        };
-
-        _context.Movie.Add(movie);
-
-        await _context.SaveChangesAsync();
-
-        return RedirectToAction(nameof(Index));
+        TempData["Error"] = $"'{model.Title}' already exists in your collection.";
+        return View(model);
     }
+
+    var movie = new Movie
+    {
+        Title = model.Title,
+        Genre = model.Genre,
+        ReleaseDate = model.ReleaseDate,
+        Rating = model.Rating,
+        Price = model.Price,
+        PosterUrl = model.PosterUrl
+    };
+
+    _context.Movie.Add(movie);
+
+    await _context.SaveChangesAsync();
+
+    TempData["Success"] = $"'{movie.Title}' imported successfully!";
+
+    return RedirectToAction(nameof(Index));
+}
     
     }
 }

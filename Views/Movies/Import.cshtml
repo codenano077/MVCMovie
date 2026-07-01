@@ -4,6 +4,13 @@
     ViewData["Title"] = "Import Movie";
 }
 
+<style>
+    input[readonly] {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+    }
+</style>
+
 <div class="container py-5">
 
     <div class="card shadow-lg border-0">
@@ -13,7 +20,13 @@
         </div>
 
         <div class="card-body">
-
+            
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                @TempData["Error"]
+                </div>
+            }
             <div class="mb-4">
 
                 <label class="form-label fw-bold">
@@ -51,7 +64,8 @@
                             <label class="form-label">Title</label>
                             <input asp-for="Title"
                                    id="Title"
-                                   class="form-control" />
+                                   class="form-control"
+                                   readonly />
                             <input asp-for="PosterUrl" id="PosterUrl" type="hidden" />
                         </div>
 
@@ -59,7 +73,8 @@
                             <label class="form-label">Genre</label>
                             <input asp-for="Genre"
                                    id="Genre"
-                                   class="form-control" />
+                                   class="form-control"
+                                   readonly />
                         </div>
 
                         <div class="mb-3">
@@ -67,14 +82,16 @@
                             <input asp-for="ReleaseDate"
                                    id="ReleaseDate"
                                    type="date"
-                                   class="form-control" />
+                                   class="form-control"
+                                   readonly />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">IMDb Rating</label>
                             <input asp-for="Rating"
                                    id="Rating"
-                                   class="form-control" />
+                                   class="form-control"
+                                   readonly />
                         </div>
 
                         <div class="mb-4">
@@ -84,8 +101,18 @@
                                    class="form-control" />
                         </div>
 
-                        <button class="btn btn-success btn-lg">
-                            Save Movie
+                        <button id="saveButton"
+                                type="submit"
+                                class="btn btn-success btn-lg"
+                                disabled>
+                            💾 Save Movie
+                        
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary btn-lg"
+                            onclick="window.location.href='@Url.Action("Index","Movies")'">
+                            ← Back to List
                         </button>
 
                     </form>
@@ -108,6 +135,7 @@ const searchBox = document.getElementById("searchMovie");
 const suggestions = document.getElementById("movieSuggestions");
 
 searchBox.addEventListener("input", async function () {
+    document.getElementById("saveButton").disabled = true;
 
     const query = this.value.trim();
 
@@ -125,25 +153,27 @@ searchBox.addEventListener("input", async function () {
 
     movies.forEach(movie => {
 
-    const item = document.createElement("a");
+    const item = document.createElement("button");
 
-    item.href = "#";
+    item.type = "button";
 
-    item.className = "list-group-item list-group-item-action";
+    item.className =
+        "list-group-item list-group-item-action border-0 text-start w-100";
 
     item.innerHTML = `
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center w-100">
 
-            <img src="${movie.poster ?? 'https://placehold.co/60x90'}"
-                 width="50"
-                 class="rounded me-3">
+        <img src="${movie.poster ?? 'https://placehold.co/60x90'}"
+            width="50"
+            height="75"
+            class="rounded me-3 flex-shrink-0">
 
-            <div>
-                <strong>${movie.title}</strong><br>
-                <small>${movie.year}</small>
-            </div>
-
+        <div class="flex-grow-1">
+            <div class="fw-bold">${movie.title}</div>
+            <small class="text-muted">${movie.year}</small>
         </div>
+
+    </div>
     `;
 
     item.addEventListener("click", async function (e) {
@@ -174,6 +204,7 @@ searchBox.addEventListener("input", async function () {
         document.getElementById("posterImage").src =
             details.poster;
         document.getElementById("PosterUrl").value = details.poster;
+        document.getElementById("saveButton").disabled = false;
     });
 
     suggestions.appendChild(item);
